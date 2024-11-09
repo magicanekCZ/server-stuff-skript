@@ -1,1 +1,79 @@
+options:
+    Item: bed 
+    Item Name: "&cLeave game"
+
+
+on skript start:
+	while client is not connected: # Using a while loop to try to connect if the client is not connected
+		create new bungee connection: # Creation of a new Bungeecord connection
+			set address of connection to "127.0.0.1" # Use this IP if the Bungeecord is on the same machine
+			set port of connection to 100 # This port as to be opened if the specified client is not hosted on the same machine as the server
+			set password of connection to "ahano" # Complete your password here, this has to be the same as the one in the Bungeecord config
+		start new connection with last created connection # Sending connection request to the server
+		wait 30 seconds # Waiting 30 seconds between 2 connection tries, it's recommended to not decrease this value
+
+
+
+
+every 5 seconds:
+    set {glide} to 0
+    loop all players in world "glide_temple":
+        add 1 to {glide}
+    loop all players in world "glide_cavern":
+        add 1 to {glide}
+    loop all players in world "glide_canyon":
+        add 1 to {glide}
+
+    set {battle} to 0
+    loop all players in world "battle_crucible":
+        add 1 to {battle}
+    loop all players in world "battle_cavern":
+        add 1 to {battle}
+    loop all players in world "battle_cove":
+        add 1 to {battle}
+
+on player world change:
+    if player's world is "world":
+        make player execute command "/er leave"
+        make player execute command "/arena leave"
+        loop 30 times:
+            send " " to player
+        MESSAGE "&8&m+---------------***---------------+"
+        MESSAGE "&r"
+        MESSAGE "&r          &b&lClassic Games"
+        MESSAGE "&r"
+        MESSAGE "&r  &3&lWEB &fwww.arcadecraft.eu !!"
+        MESSAGE "&r  &3&lDISCORD &fdiscord.arcadecraft.eu !!"
+        MESSAGE "&r  &3&lSHOP &fshop.arcadecraft.eu !!"
+        MESSAGE "&r"
+        MESSAGE "&8&m+---------------***---------------+"
+        broadcast "&2&l+ &3%player%" to player's world
+        make player execute command "/deluxehub:lobby"
+        set player's gamemode to adventure
+command /lobby:
+    aliases: /hub
+    trigger:
+        if player is in world "world":
+            make bungee execute console command "send %player's name% lobby"
+        else:
+            make player execute command "/er leave"
+            make player execute command "/arena leave"
+            make player execute command "/deluxehub:lobby"
+            loop 30 times:
+                send " " to player
+            MESSAGE "&8&m+---------------***---------------+"
+            MESSAGE "&r"
+            MESSAGE "&r          &b&lClassic Games"
+            MESSAGE "&r"
+            MESSAGE "&r  &3&lWEB &fwww.arcadecraft.eu !!"
+            MESSAGE "&r  &3&lDISCORD &fdiscord.arcadecraft.eu !!"
+            MESSAGE "&r  &3&lSHOP &fshop.arcadecraft.eu !!"
+            MESSAGE "&r"
+            MESSAGE "&8&m+---------------***---------------+"
+            
+            
+
+
+
+
 
