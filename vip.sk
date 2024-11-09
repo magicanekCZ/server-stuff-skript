@@ -1,0 +1,34 @@
+Options:
+	prefix: &b&oServer&r&8»&r
+	prefixCoins: &b&oCoins&r&8»&r
+	rules: http://arcadecraft.eu/pravidla/
+
+command /kupvipko [<text>]:
+    trigger:
+        if arg-1 is "vip":
+            if player's balance > 10000:
+                make console execute command "lp user %player's name% permission settemp group.vip true 1mo replace"
+                make console execute command "coins %player's name% 1000"
+                make bungee server named "lifesteal" execute console command "ecogive %player's name% 10000"
+                send "{@prefix} &rRank &6&lVIP&r aktivovan na 30 dni"
+            else:
+                send "{@prefix} &cNedostatek coinů"
+        if arg-1 is "mvp":
+            if player's balance > 100000:
+                make console execute command "lp user %player's name% permission settemp group.mvp true 1mo replace"
+                make console execute command "coins %player's name% 20000"
+                make bungee server named "lifesteal" execute console command "ecogive %player's name% 20000"
+                send "{@prefix} &rRank &b&lMVP&r aktivovan na 30 dni"
+            else:
+                send "{@prefix} &cNedostatek coinů"
+    
+
+command /vip:
+    trigger:
+        make player execute command "/deluxehub open VIP"
+
+
+
+command /viplink:
+    trigger:
+        send "{@prefix} Odkaz na obchod: <link:http://shop.arcadecraft.eu><ttp:&aKlikni pro odkaz do obchodu>&aKlikni zde<reset>"    

@@ -1,0 +1,84 @@
+#
+# Disables rain & thunder in all worlds
+#
+Options:
+	prefix: &b&oServer&r&8»&r
+	prefixCoins: &b&oCoins&r&8»&r
+	rules: http://arcadecraft.eu/pravidla/
+
+on weather change to rain or thunder:
+	cancel event
+
+
+
+command /coins [<offline player>] [<number>]:
+	permission: coins.admin
+	permission message: {@prefixCoins} &cNemas opravneni
+	trigger:
+		if arg-1 is not set:
+			send "{@prefixCoins} &cPouziti: /coins <hrac> <coins>"
+		else:
+			if arg-2 is not set:
+				send "{@prefixCoins} &cZadejte pocet coinu"
+			else:
+				add arg-2 to arg-1's balance
+				send "{@prefixCoins} &fHraci &b%arg-1%&f bylo pripsano &b%arg-2%&f do hracova konta."
+				loop all players: 
+					if arg-1 is loop-player:
+						send "{@prefixCoins} &fBylo ti pripsano &b%arg-2%&f coinu." to loop-player
+
+command /sendcoins [<offline player>] [<number>]:
+	trigger:
+		if arg-1 is not set:
+			send "{@prefixCoins} &cPouziti: /sendcoins <hrac> <coins>"
+		else:
+			if arg-2 is not set:
+				send "{@prefixCoins} &cZadejte pocet coinu"
+			else:
+				
+				loop all players: 
+					if arg-1 is loop-player:
+						send "{@prefixCoins} &f%player% ti poslal &b%arg-2%&f coinu." to loop-player
+						remove arg-2 from player's balance
+						add arg-2 to arg-1's balance
+						send "{@prefixCoins} &fHraci &b%arg-1%&f bylo pripsano &b%arg-2%&f do hracova konta."
+
+
+command /broadcast [<text>]:
+	permission: group.admin
+	permission message: {@prefix} &bNemas opravneni
+	trigger:
+		if arg-1 is set:
+			broadcast "{@prefix} %colored arg-1%"
+		else:
+			send "{@prefix} &cZadejte zprávu."
+
+command /list:
+    trigger: 
+        set {_server} to server of (bungee player named "%player%")
+        message " "
+        message "&b&lSERVER LIST"
+        loop all bungee servers:
+            set {_online} to amount of bungee players on (bungeeserver named "%loop-bungeeserver%")
+            set {_bungeeserver} to loop-bungeeserver
+            if "%{_server}%" = "%{_bungeeserver}%":
+                send "&7%{_bungeeserver}% &8» &a%{_online}% hráč &e&o     <- Zde jsi"
+            else:
+                send "&7%{_bungeeserver}% &8» &f%{_online}% hráč"
+        message " "
+
+
+
+command /vote:
+	trigger:
+		
+		
+		send "{@prefix} &bMinecraftservery.eu: &r<link:https://minecraftservery.eu/server/1539/vote><ttp:&aKlikni pro presmerovani>&aKlikni zde<reset>"
+		send "{@prefix} &bMinecraft-list.cz: &r<link:https://www.minecraft-list.cz/server/arcadecrafteu><ttp:&aKlikni pro presmerovani>&aKlikni zde<reset>"
+		send "{@prefix} &bCzech-craft.eu: &r<link:https://czech-craft.eu/server/arcadecraft-eu-knockbackffa-skywars-bedwars-lifesteal-cz-sk/><ttp:&aKlikni pro presmerovani>&aKlikni zde<reset>"
+command /rules:
+	trigger:
+		send "{@prefix} &fPravidla nalezneš zde: <link:{@rules}><ttp:&aKlikni pro zobrazeni pravidel>&aKlikni zde<reset>"
+
+
+

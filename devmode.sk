@@ -1,0 +1,29 @@
+options:
+	dev-message: &b&lNa serveru probíhá údržba
+	permission: group.helper
+
+command /devmode [<text>]:
+	permission: {@permission}
+	trigger:
+		if arg-1 is not set:
+			send "   &f/devmode &aon" to player
+			send "   &f/devmode &coff" to player
+		if arg-1 is "on":
+			send "   &fDevelopement Mode is: &aON&f!" to player
+			set {devmode.status} to true
+		if arg-1 is "off":
+			send "   &fDevelopement Mode is: &cOFF&f!" to player
+			set {devmode.status} to false
+
+on connect:
+	if player has permission "{@permission}":
+		send "Ahoj!"
+	else:
+		if {devmode.status} is true:
+			kick player due to "{@dev-message}"
+			loop all players:
+				if loop-player has permission "{@permission}":
+					send "&c%player% &fse pokusil připojit, ale na serveru je @azapnuta&f údržba!" to loop-player
+
+
+

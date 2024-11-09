@@ -1,0 +1,45 @@
+options:
+	prefix: "&b&oServer&r&8»&r" 
+
+
+
+command /promote [<offline player>]:
+	permission: panel.promote
+	trigger:
+		if arg-1 is set:
+			if arg-1 is command sender:
+				send "%{@prefix}% &cNemuzes pouzit prikaz sam na sebe."
+			else:
+				if arg-1 is a offline player:
+					if arg-1 has permission "panel.promote.imune":
+						send "%{@prefix}% &cNemuzes upravovat rank tohoto hrace"
+					else:
+						set {promote.actual} to arg-offlineplayer
+						set {_gui} to a new chest inventory with 3 row with name "&b&lPromote panel"
+						set slot 0 of {_gui} to skull of arg-1 named "&b%arg-1%" with lore "&7Rank: &r%arg-offlineplayer's group%"
+						set slot 10 of {_gui} to gray wool named "&8Hrac" with lore "&eKlikni pro zmenu ranku"
+						set slot 11 of {_gui} to cyan wool named "&3Helper" with lore "&eKlikni pro zmenu ranku"
+						set slot 12 of {_gui} to light blue wool named "&bAdmin" with lore "&eKlikni pro zmenu ranku"
+
+						open {_gui} to player
+
+		else:
+			send "%{@prefix}% &cPouziti: /promote <hrac>"
+		
+on inventory click:
+	if event-inventory's name is "&b&lPromote panel":
+		cancel event
+		if name of event-item is "&8Hrac":
+			make console execute command "lp user %{promote.actual}% permission unset group.%{promote.actual}'s group%"
+			make console execute command "lp user %{promote.actual}% permission set group.hrac"
+			close event-player's inventory 
+		else if name of event-item is "&3Helper":
+			make console execute command "lp user %{promote.actual}% permission unset group.%{promote.actual}'s group%"
+			make console execute command "lp user %{promote.actual}% permission set group.helper"
+			close event-player's inventory 
+		else if name of event-item is "&bAdmin":
+			make console execute command "lp user %{promote.actual}% permission unset group.%{promote.actual}'s group%"
+			make console execute command "lp user %{promote.actual}% permission set group.admin"
+			close event-player's inventory 
+		send "%{@prefix}% Hraci &b%{promote.actual}%&f byl nastaven rank &b%{promote.actual}'s group%"
+		set {promote.actual} to ""
